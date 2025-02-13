@@ -1,0 +1,28 @@
+### Create a New Like
+POST http://localhost:8080/api/likes
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "targetType": "video",
+  "targetId": 5
+}
+
+### Retrieve All Likes
+GET http://localhost:8080/api/likes
+
+### Retrieve a Specific Like (Assume ID is 1)
+GET http://localhost:8080/api/likes/1
+
+### Update an Existing Like
+PUT http://localhost:8080/api/likes/1
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "targetType": "court",
+  "targetId": 3
+}
+
+### Delete a Like
+DELETE http://localhost:8080/api/likes/1
