@@ -1,0 +1,28 @@
+### Create a New Court
+POST http://localhost:8080/api/courts
+Content-Type: application/json
+
+{
+  "name": "Coney Island Handball Courts",
+  "borough": "Manhattan",
+  "imageUrl": "https://example.com/grand-st.jpg"
+}
+
+### Retrieve All Courts
+GET http://localhost:8080/api/courts
+
+### Retrieve a Specific Court (Assume ID is 1)
+GET http://localhost:8080/api/courts/1
+
+### Update an Existing Court
+PUT http://localhost:8080/api/courts/1
+Content-Type: application/json
+
+{
+  "name": "Updated Grand St Handball Courts",
+  "borough": "Manhattan",
+  "imageUrl": "https://example.com/updated-grand-st.jpg"
+}
+
+### Delete a Court
+DELETE http://localhost:8080/api/courts/4
