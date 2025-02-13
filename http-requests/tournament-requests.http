@@ -1,0 +1,28 @@
+### Create a Tournament
+POST http://localhost:8080/api/tournaments
+Content-Type: application/json
+
+{
+  "name": "Spring Handball Tournament",
+  "date": "2025-03-15",
+  "description": "An exciting spring tournament for all skill levels."
+}
+
+### Get All Tournaments
+GET http://localhost:8080/api/tournaments
+
+### Get a Tournament by ID (assume ID is 1)
+GET http://localhost:8080/api/tournaments/1
+
+### Update a Tournament (change name)
+PUT http://localhost:8080/api/tournaments/1
+Content-Type: application/json
+
+{
+  "name": "Updated Tournament Name",
+  "date": "2025-03-15",
+  "description": "An updated description for the tournament."
+}
+
+### Delete a Tournament
+DELETE http://localhost:8080/api/tournaments/4
