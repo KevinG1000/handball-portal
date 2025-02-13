@@ -1,0 +1,30 @@
+### Create a New Comment
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "targetType": "video",
+  "targetId": 5,
+  "content": "Wow, Gio was on fire this game!"
+}
+
+### Retrieve All Comments
+GET http://localhost:8080/api/comments
+
+### Retrieve a Specific Comment (Assume ID is 1)
+GET http://localhost:8080/api/comments/1
+
+### Update an Existing Comment
+PUT http://localhost:8080/api/comments/1
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "targetType": "video",
+  "targetId": 5,
+  "content": "Updated comment: Even better upon a second watch!"
+}
+
+### Delete a Comment
+DELETE http://localhost:8080/api/comments/1
