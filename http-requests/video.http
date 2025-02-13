@@ -1,0 +1,28 @@
+### Create a New Video
+POST http://localhost:8080/api/videos
+Content-Type: application/json
+
+{
+  "title": "YouTube Video Title",
+  "videoUrl": "https://www.youtube.com/watch?v=someId",
+  "videoType": "Instructional"
+}
+
+### Retrieve All Videos
+GET http://localhost:8080/api/videos
+
+### Retrieve a Specific Video (Assume ID 1)
+GET http://localhost:8080/api/videos/1
+
+### Update an Existing Video
+PUT http://localhost:8080/api/videos/1
+Content-Type: application/json
+
+{
+  "title": "Updated Video Title",
+  "videoUrl": "https://www.youtube.com/watch?v=someOtherId",
+  "videoType": "Tournament Recap"
+}
+
+### Delete a Video
+DELETE http://localhost:8080/api/videos/1
