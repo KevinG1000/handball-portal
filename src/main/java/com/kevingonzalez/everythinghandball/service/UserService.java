@@ -43,7 +43,6 @@ public class UserService {
             user.setPassword(userDetails.getPassword());
             return userRepository.save(user);
         } else {
-            // You might want to handle the "user not found" scenario differently, such as throwing a custom exception.
             throw new RuntimeException("User not found with id " + id);
         }
     }
@@ -51,5 +50,10 @@ public class UserService {
     // Delete a user by id
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    // Retrieve a user by username (for login)
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
