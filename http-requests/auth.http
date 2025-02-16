@@ -3,7 +3,7 @@ POST http://localhost:8080/api/auth/signup
 Content-Type: application/json
 
 {
-  "username": "biscuit2",
+  "username": "biscuit",
   "email": "Biscuit@example.com",
   "password": "meow123"
 }
@@ -13,6 +13,6 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "biscuit2",
+  "username": "biscuit",
   "password": "meow123"
 }

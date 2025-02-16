@@ -1,7 +1,9 @@
 package com.kevingonzalez.everythinghandball.controller;
 
+import com.kevingonzalez.everythinghandball.dto.SignUpRequest;
 import com.kevingonzalez.everythinghandball.model.User;
 import com.kevingonzalez.everythinghandball.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +22,27 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // Sign-up endpoint
+    // Sign-Up Endpoint: prevents duplicate usernames
     @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody User user) {
-        // Hash the user's password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        // Check if a user with the same username already exists
+        if (userService.findByUsername(signUpRequest.getUsername()) != null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Username already exists");
+        }
+
+        // Create new User and hash the password
+        User user = new User();
+        user.setUsername(signUpRequest.getUsername());
+        user.setEmail(signUpRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+
         User createdUser = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    // Login endpoint (basic demonstration)
+    // Login Endpoint: validates credentials and returns a message
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         User user = userService.findByUsername(loginRequest.getUsername());
@@ -41,7 +54,7 @@ public class AuthController {
     }
 }
 
-// DTO for login
+// DTO for login requests
 class LoginRequest {
     private String username;
     private String password;
