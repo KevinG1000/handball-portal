@@ -3,16 +3,25 @@ POST http://localhost:8080/api/auth/signup
 Content-Type: application/json
 
 {
-  "username": "biscuit",
-  "email": "Biscuit@example.com",
-  "password": "meow123"
+  "username": "KevinG123",
+  "email": "kevin@example.com",
+  "password": "securePassword"
 }
 
-### Login with the User Credentials
+### Login with the User Credentials (Correct)
 POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "biscuit",
-  "password": "meow123"
+  "username": "KevinG123",
+  "password": "securePassword"
+}
+
+### Login with Incorrect Password
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "KevinG123",
+  "password": "wrongPassword"
 }
