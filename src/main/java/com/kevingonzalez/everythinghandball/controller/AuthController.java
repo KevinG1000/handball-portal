@@ -12,44 +12,74 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     private final UserService userService;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthController(UserService userService) {
         this.userService = userService;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     // Sign-Up Endpoint: prevents duplicate usernames
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        // Check if a user with the same username already exists
-        if (userService.findByUsername(signUpRequest.getUsername()) != null) {
-            return ResponseEntity
+        try {
+            // Check if username exists
+            if (userService.findByUsername(signUpRequest.getUsername()) != null) {
+                return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Username already exists");
+            }
+
+            // Create new user
+            User user = new User();
+            user.setUsername(signUpRequest.getUsername());
+            user.setEmail(signUpRequest.getEmail());
+            user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+
+            User createdUser = userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        } catch (Exception e) {
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error creating user: " + e.getMessage());
         }
-
-        // Create new User and hash the password
-        User user = new User();
-        user.setUsername(signUpRequest.getUsername());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     // Login Endpoint: validates credentials and returns a message
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        User user = userService.findByUsername(loginRequest.getUsername());
-        if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            return ResponseEntity.ok("Login successful!");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            User user = userService.findByUsername(loginRequest.getUsername());
+            
+            // Add debug logging
+            System.out.println("Login attempt for username: " + loginRequest.getUsername());
+            System.out.println("User found: " + (user != null));
+            
+            if (user != null) {
+                boolean passwordMatches = passwordEncoder.matches(loginRequest.getPassword(), user.getPassword());
+                System.out.println("Password matches: " + passwordMatches);
+                
+                if (passwordMatches) {
+                    // Remove password from response
+                    user.setPassword(null);
+                    return ResponseEntity.ok(user);
+                }
+            }
+            
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Invalid username or password");
+                
+        } catch (Exception e) {
+            System.out.println("Login error: " + e.getMessage());
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error during login: " + e.getMessage());
         }
     }
 }

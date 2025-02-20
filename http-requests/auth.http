@@ -3,8 +3,8 @@ POST http://localhost:8080/api/auth/signup
 Content-Type: application/json
 
 {
-  "username": "KevinG123",
-  "email": "kevin@example.com",
+  "username": "Kevin222",
+  "email": "@example.com",
   "password": "securePassword"
 }
 
@@ -13,7 +13,7 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "KevinG123",
+  "username": "Kevin222",
   "password": "securePassword"
 }
 
@@ -22,6 +22,6 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "KevinG123",
+  "username": "Kevin222",
   "password": "wrongPassword"
 }
