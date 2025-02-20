@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/comments")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CommentController {
 
     private final CommentService commentService;
@@ -22,6 +23,12 @@ public class CommentController {
     @PostMapping
     public Comment createComment(@RequestBody Comment comment) {
         return commentService.createComment(comment);
+    }
+
+    // Get comments for a specific tournament
+    @GetMapping("/tournament/{tournamentId}")
+    public List<Comment> getCommentsByTournamentId(@PathVariable Long tournamentId) {
+        return commentService.getCommentsByTournamentId(tournamentId);
     }
 
     // Retrieve a comment by ID

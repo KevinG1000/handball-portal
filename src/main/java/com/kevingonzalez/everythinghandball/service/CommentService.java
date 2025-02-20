@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
 public class CommentService {
@@ -19,7 +20,13 @@ public class CommentService {
 
     // Create a new comment
     public Comment createComment(Comment comment) {
+        comment.setTimestamp(LocalDateTime.now());
         return commentRepository.save(comment);
+    }
+
+    // Get comments for a specific tournament
+    public List<Comment> getCommentsByTournamentId(Long tournamentId) {
+        return commentRepository.findByTournamentIdOrderByTimestampDesc(tournamentId);
     }
 
     // Retrieve a comment by ID
@@ -34,19 +41,13 @@ public class CommentService {
 
     // Update an existing comment
     public Comment updateComment(Long id, Comment updatedComment) {
-        Optional<Comment> optionalComment = commentRepository.findById(id);
-        if (optionalComment.isPresent()) {
-            Comment comment = optionalComment.get();
-            comment.setUserId(updatedComment.getUserId());
-            comment.setTargetType(updatedComment.getTargetType());
-            comment.setTargetId(updatedComment.getTargetId());
-            comment.setContent(updatedComment.getContent());
-            // Optionally, update the timestamp if needed:
-            // comment.setTimestamp(LocalDateTime.now());
-            return commentRepository.save(comment);
-        } else {
-            throw new RuntimeException("Comment not found with id " + id);
-        }
+        return commentRepository.findById(id)
+            .map(comment -> {
+                comment.setContent(updatedComment.getContent());
+                comment.setTournamentId(updatedComment.getTournamentId());
+                return commentRepository.save(comment);
+            })
+            .orElseThrow(() -> new RuntimeException("Comment not found with id " + id));
     }
 
     // Delete a comment by ID

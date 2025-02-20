@@ -15,23 +15,13 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-    private String targetType; // e.g., "video", "court"
-    private Long targetId;
+    private Long tournamentId;  // Changed from targetId
     private String content;
+    private String username;  // Added username field
     private LocalDateTime timestamp;
 
-    // Default constructor (sets the timestamp to now)
+    // Default constructor
     public Comment() {
-        this.timestamp = LocalDateTime.now();
-    }
-
-    // Parameterized constructor
-    public Comment(Long userId, String targetType, Long targetId, String content) {
-        this.userId = userId;
-        this.targetType = targetType;
-        this.targetId = targetId;
-        this.content = content;
         this.timestamp = LocalDateTime.now();
     }
 
@@ -44,28 +34,12 @@ public class Comment {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getTargetType() {
-        return targetType;
-    }
-
-    public void setTargetType(String targetType) {
-        this.targetType = targetType;
-    }
-
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     public String getContent() {
@@ -74,6 +48,14 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public LocalDateTime getTimestamp() {
